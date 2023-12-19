@@ -275,10 +275,12 @@ Using userEvent we need to start session
     user =userEvent.setup()
 
 #### it always return a PROMISE
+
 therefore test has to be async
 and await user.click
 
 ## Mock Service Worker
+
 Documentation
 - https://mswjs.io/
 
@@ -326,3 +328,34 @@ Documentation
     - reset after each test
 
 ### ANYTIME dealing with async request USE async/await in test and findBy
+
+### Simulating Error response from the server
+
+- Overwrite the default server handlers
+- In test file import
+    import { http, HttpResponse } from "msw";
+    import {server} from '../../../mocks/server';
+
+    and reset handlers in this file (set status and errors which you need to test)
+      server.resetHandlers(
+          http.get('https://localhost:3030/scoops', ()=>{
+              return new HttpResponse(null, {status: 500})
+          }),
+
+          server.resetHandlers(
+                    http.get('https://localhost:3030/toppings', ()=>{
+                        return new HttpResponse(null, {status: 500})
+                    }),
+
+        )
+
+
+### Debug
+
+Documentation https://mswjs.io/docs/runbook/
+
+import { logRoles} from '@testing-library/react';
+
+in test
+const {container} = render (<COMPONENT/>);
+logRoles( container);
