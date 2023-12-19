@@ -262,7 +262,7 @@ For example:
 - expect(buttonElement).toHaveClass("blue");
 
 
-##Events
+##E vents
 
 - import { fireEvent } from '@testing-library/react';
 
@@ -274,7 +274,55 @@ Using userEvent we need to start session
 
     user =userEvent.setup()
 
-###it always return a PROMISE
+#### it always return a PROMISE
 therefore test has to be async
 and await user.click
 
+## Mock Service Worker
+Documentation
+- https://mswjs.io/
+
+- install `npm install msw`
+- Create handlers - function that defines what is returned from particular uri route
+    - create /mocks/handlers.js
+    - create function that returs the responce for each route:
+
+    import { http, HttpResponse } from 'msw'
+
+    export const handlers = [
+        http                              //http handler type for REST API - it is http for GRAPHQL - it is graphql
+        .post(                            // method
+        '/auth',                          //URL
+        () => {
+            return HttpResponse.json({    //response
+                user: {
+                    id: 'abc-123',
+                    name: 'John Maverick',
+                },
+            })
+        }),
+    ]
+
+- Create test server
+
+ Use Node.js integration
+    - Create mocks/server.js
+        import { setupServer } from 'msw/node'
+        import { handlers } from './handlers'
+
+        export const server = setupServer(...handlers)
+
+    - Enable mocking
+    Edit setupTests.js
+         import { beforeAll, afterEach, afterAll } from 'vitest'
+         import { server } from './mocks/server
+
+         beforeAll(() => server.listen())
+         afterEach(() => server.resetHandlers())
+         afterAll(() => server.close())
+
+
+- Make sure test server listen during all tests and intersept all server calls (setup.js)
+    - reset after each test
+
+### ANYTIME dealing with async request USE async/await in test and findBy
