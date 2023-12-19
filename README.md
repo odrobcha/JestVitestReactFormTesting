@@ -187,7 +187,7 @@ It creates simulated DOM
 - import { render} from "@testing-library/react";
 - render(<Component/>)
 
-##screen
+## screen
 
 It gives access to simulated DOM
 - import { screen } from "@testing-library/react";
@@ -228,13 +228,20 @@ Documentation
 - https://testing-library.com/docs/react-testing-library/cheatsheet/
 - https://testing-library.com/docs/queries/about/#priority
 
-No Match | 1 Match | 1+ Match | Await?
+No Match | 1 Match | 1+ Match | Await
+
 --- | --- | --- |
+
 getBy | throw | return | throw | No
+
 findBy | throw | return | throw | Yes
+
 queryBy | null | return | throw | No
+
 getAllBy | throw | array | array | No
+
 findAllBy | throw | array | array | Yes
+
 queryAllBy | [] | array | array | No
 
 For example:
