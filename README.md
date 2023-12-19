@@ -228,9 +228,7 @@ Documentation
 - https://testing-library.com/docs/react-testing-library/cheatsheet/
 - https://testing-library.com/docs/queries/about/#priority
 
-No Match | 1 Match | 1+ Match | Await
-
---- | --- | --- |
+---- | No Match | 1 Match | 1+ Match | Await
 
 getBy | throw | return | throw | No
 
