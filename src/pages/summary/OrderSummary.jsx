@@ -1,45 +1,33 @@
 import React, {useState} from 'react';
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
-import Popover from "react-bootstrap/Popover";
-
+import SummaryForm from './SummaryForm';
+import {useOrderDetails} from '../../context/OrderDetails';
+import {formatCurrency} from '../../utilities';
 
 const OrderSummary = () =>{
-    const [tcChecked, setTcChecked] = useState(false);
+    const {totals, optionCounts} = useOrderDetails();
+    const scoopArray = Object.entries(optionCounts.scoops) // [["chocolates" : 2], ["vanila" : 2]]
+    const scoopList = scoopArray.map(([key, value])=>{return(
+      <li key={{key}}>
+          {value} {key}
+      </li>
+    )});
 
-    const popover = (
-      <Popover id="popover-basic">
-          <Popover.Body>No ice cream will actually be delivered</Popover.Body>
-      </Popover>
-    );
+    const toppingsArray = Object.keys(optionCounts.toppings); //["M&M's" , "Gummy bear"]
+    const toppingsList = toppingsArray.map(key => { return (
+      <li key = {key}>
+          {key}
+      </li>
+    )})
 
-    const checkboxLabel = (
-      <span>
-      I agree to
-      <OverlayTrigger placement="right" overlay={popover}>
-        <span style={{ color: "blue" }}> Terms and Conditions</span>
-      </OverlayTrigger>
-    </span>
-    );
-
-    const handleOrder = (e)=>{
-        e.preventDefault();
-    };
-    return (
-      <Form>
-          <Form.Group controlId="terms-and-conditions">
-              <Form.Check
-                type="checkbox"
-                checked={tcChecked}
-                onChange={(e) => setTcChecked(e.target.checked)}
-                label={checkboxLabel}
-              />
-          </Form.Group>
-          <Button variant="primary" type="submit" disabled={!tcChecked}>
-              Confirm order
-          </Button>
-      </Form>
+    return(
+      <div>
+          <h1>Order Summary</h1>
+          <h2>Scoops: {formatCurrency(totals['scoops'])}</h2>
+          <ul>{scoopList}</ul>
+          <h2>Toppings: {formatCurrency(totals['toppings'])}</h2>
+          <ul> {toppingsList}</ul>
+          <SummaryForm/>
+      </div>
     )
 
 };

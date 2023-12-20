@@ -272,12 +272,19 @@ OR
 
 Using userEvent we need to start session
 
-    user =userEvent.setup()
+   const user =userEvent.setup()
 
 #### it always return a PROMISE
 
 therefore test has to be async
 and await user.click
+
+While testing text input it is good to clear the input before
+await user.clear(element)
+
+and then type
+
+await user.type(element, "VALUE");
 
 ## Mock Service Worker
 
@@ -329,7 +336,7 @@ Documentation
 
 ### ANYTIME dealing with async request USE async/await in test and findBy
 
-### Simulating Error response from the server
+## Simulating Error response from the server
 
 - Overwrite the default server handlers
 - In test file import
@@ -359,3 +366,35 @@ import { logRoles} from '@testing-library/react';
 in test
 const {container} = render (<COMPONENT/>);
 logRoles( container);
+
+
+### Testing React Context
+In component
+You need to provide the wrapper to the component
+
+import {ContextProvider} from '../context/ContextProvider';
+render(<Options optionType="scoops"/>, {wrapper : ContextProvider});
+
+!!! Note. It can be Redux, Router, any type of wrapper
+
+OR
+
+Add it globally
+Documentation https://testing-library.com/docs/react-testing-library/setup/
+
+Create test-utils/testing-library-utils.jsx
+Import any wrapper we need to add
+
+import {render} from '@testing-library/react';
+import { OrderDetailsProvider } from '../context/OrderDetails';
+
+const renderWithContext = (ui, options) =>{
+    return render(ui, {wrapper: OrderDetailsProvider, ...options})
+};renderWithContext()
+
+export * from '@testing-library/react'
+
+export {renderWithContext as render};
+
+Then import render from thisfile to the test file that needs any wrapper
+import { render, screen, logRoles } from '../../../test-utils/testing-library-utils';
