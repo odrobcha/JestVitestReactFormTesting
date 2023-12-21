@@ -32,9 +32,9 @@ const Options = ({ optionType }) => {
             });
 
           //abort axios call on component unmount
-          return ()=> {
-            controller.abort();
-          }
+          // return ()=> {
+          //   controller.abort();
+          // }
       },
       [optionType]);
     if (error){
