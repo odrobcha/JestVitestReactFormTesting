@@ -3,10 +3,10 @@ import userEvent from "@testing-library/user-event";
 import App from '../App';
 import { expect } from 'vitest';
 
-test("orederphases for happy path", async ()=>{
+test("order phases for happy path", async ()=>{
     const user = userEvent.setup();
     //render App
-    const {container} = render(<App/>);
+    const {container, unmount} = render(<App/>);
 
     //add scoops
     const vanillaInput = await screen.findByRole('spinbutton', {
@@ -23,6 +23,8 @@ test("orederphases for happy path", async ()=>{
     const orderButton = screen.getByRole("button", {name: /view order/i});
     await user.click(orderButton);
     //check summary
+    const summaryHeading = screen.getByRole('heading', {name: "Order Summary"});
+    expect(summaryHeading).toBeInTheDocument();
 
     const scoopsPrice = screen.getByText(/scoops:/i);
     expect(scoopsPrice).toHaveTextContent("$2.00");
@@ -32,6 +34,9 @@ test("orederphases for happy path", async ()=>{
 
     const orderLists = screen.getAllByRole('list');
     expect(orderLists).toHaveLength(2);
+
+    expect(screen.getByText("1 Vanilla")).toBeInTheDocument();
+    expect(screen.getByText("M&Ms")).toBeInTheDocument();
 
     //accept T&C and click button to confirm order
     const checkbox = screen.getByRole('checkbox', { name: /I agree to/i });
@@ -48,7 +53,8 @@ test("orederphases for happy path", async ()=>{
     // confirm order number on confirmation page
 
     const orderNumber =  await screen.findByText(/order number/i);
-    expect(orderNumber).toHaveTextContent("111222")
+    expect(orderNumber).toHaveTextContent("111222");
+    expect(loader).not.toBeInTheDocument();
    //click "new order" button on confirmation page
 
     const newOrder = screen.getByRole("button", {name: /new order/i});
@@ -64,5 +70,5 @@ test("orederphases for happy path", async ()=>{
 
     const MandMCheckboxUpd = await screen.findByRole('checkbox', { name: 'M&Ms' });
     expect(MandMCheckboxUpd.checked).toEqual(false);
-
+    unmount();
 });

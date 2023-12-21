@@ -20,7 +20,7 @@ const Options = ({ optionType }) => {
           const controller = new AbortController()
           //optionType is 'scoops' or ' toppings
           axios
-            .get(`http://localhost:3030/${optionType}`, {signal: controller.signal}) //axios watch abortController
+            .get(`http://localhost:3030/${optionType}` /*, {signal: controller.signal}*/) //axios watch abortController
             .then(res => {
                 setItems(res.data);
             })
@@ -32,9 +32,11 @@ const Options = ({ optionType }) => {
             });
 
           //abort axios call on component unmount
-          // return ()=> {
-          //   controller.abort();
-          // }
+          return ()=> {
+           // controller.abort();
+
+              console.log("Unmount")
+          }
       },
       [optionType]);
     if (error){
