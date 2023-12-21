@@ -7,7 +7,7 @@ import {pricePerItem} from '../../constants';
 import {formatCurrency} from '../../utilities';
 import { useOrderDetails} from '../../context/OrderDetails';
 
-import { Row } from 'react-bootstrap';
+import { Col } from 'react-bootstrap';
 
 const Options = ({ optionType }) => {
     const [items, setItems] = useState([]);
@@ -16,15 +16,25 @@ const Options = ({ optionType }) => {
 
     useEffect(
       () => {
+          // create an abortController to attach to network request
+          const controller = new AbortController()
           //optionType is 'scoops' or ' toppings
-          axios.get(`http://localhost:3030/${optionType}`)
+          axios
+            .get(`http://localhost:3030/${optionType}`, {signal: controller.signal}) //axios watch abortController
             .then(res => {
                 setItems(res.data);
             })
             .catch(err => {
                 //error handling
-                setError(true);
+                if (error.name !== "CanceledError") {   //to set error only if request was not Canceled
+                    setError(true);
+                }
             });
+
+          //abort axios call on component unmount
+          return ()=> {
+            controller.abort();
+          }
       },
       [optionType]);
     if (error){
@@ -51,9 +61,10 @@ const Options = ({ optionType }) => {
           </h2>
           <p>{formatCurrency(pricePerItem[optionType])} each</p>
           <p>{title} total: {formatCurrency(totals[optionType])}</p>
-          <Row>
+
+          <div style={{display: "flex", justifyContent : "space-around" , marginBottom: "40px"}}>
               {optionItems}
-          </Row>
+          </div>
       </>
     );
 };

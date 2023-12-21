@@ -398,3 +398,13 @@ export {renderWithContext as render};
 
 Then import render from thisfile to the test file that needs any wrapper
 import { render, screen, logRoles } from '../../../test-utils/testing-library-utils';
+
+
+## To unmount component if the axios/fetch request is not finished
+
+Example is in Options.jsx
+
+- Create new AbortController
+- Add the signal of it to axios request
+- to stop the request add in return of useEffect  controller.abort();
+- And in .catch Add an error only it  if (error.name !== "CanceledError")

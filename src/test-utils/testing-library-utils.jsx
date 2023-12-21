@@ -3,7 +3,7 @@ import { OrderDetailsProvider } from '../context/OrderDetails';
 
 const renderWithContext = (ui, options) =>{
     return render(ui, {wrapper: OrderDetailsProvider, ...options})
-};renderWithContext()
+};
 
 export * from '@testing-library/react'
 
