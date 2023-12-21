@@ -7,7 +7,7 @@ test("orederphases for happy path", async ()=>{
     const user = userEvent.setup();
     //render App
     const {container} = render(<App/>);
-    logRoles(container)
+
     //add scoops
     const vanillaInput = await screen.findByRole('spinbutton', {
         name: 'Vanilla',
@@ -37,11 +37,14 @@ test("orederphases for happy path", async ()=>{
     const checkbox = screen.getByRole('checkbox', { name: /I agree to/i });
     const confirmButton = screen.getByRole('button', { name: /confirm order/i });
 
-
     await user.click(checkbox);
     await user.click(confirmButton);
 
+    // screen.debug();
+    // logRoles(container);
 
+    const loader = await screen.getByTestId('loader');
+    expect(loader).toBeInTheDocument();
     // confirm order number on confirmation page
 
     const orderNumber =  await screen.findByText(/order number/i);
@@ -52,7 +55,8 @@ test("orederphases for happy path", async ()=>{
     await user.click(newOrder);
     //check that scoops and toppings been update
 
- //   screen.debug();
+
+
     const vanillaInputUpd = await screen.findByRole('spinbutton', {
         name: 'Vanilla',
     });

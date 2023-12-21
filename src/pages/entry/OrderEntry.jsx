@@ -6,19 +6,19 @@ import OrderSummary from '../summary/OrderSummary';
 const OrderEntry = () => {
     const [viewOrder, setViewOrder] = useState(false);
 
-
-    const viewOrderHandler = ()=>{
-        setViewOrder(true)
+    const viewOrderHandler = () => {
+        setViewOrder(true);
     };
 
-    const  orderSetHandler = ()=>{
-        setViewOrder(false)
+    const orderSetHandler = () => {
+        setViewOrder(false);
     };
 
     return (
       <>
           {!viewOrder &&
           <div>
+
               <Options optionType='scoops'/>
               <Options optionType='toppings'/>
               <GrandTotal/>
@@ -29,11 +29,11 @@ const OrderEntry = () => {
           }
 
           {viewOrder &&
-            <OrderSummary newOrder={orderSetHandler}/>
+          <OrderSummary newOrder={orderSetHandler}/>
           }
 
       </>
-    )
+    );
 };
 
 export default OrderEntry;

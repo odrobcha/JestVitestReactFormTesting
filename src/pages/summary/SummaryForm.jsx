@@ -4,10 +4,12 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import Loader from '../common/Loader';
 
 const SummaryForm = ({ onOrderSet }) => {
     const [tcChecked, setTcChecked] = useState(false);
     const [orderNumber, setOrderNumber] = useState();
+    const [isLoading, setIsLoading] = useState(false);
 
     const popover = (
       <Popover id="popover-basic">
@@ -26,6 +28,7 @@ const SummaryForm = ({ onOrderSet }) => {
 
     const handleOrder = (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         axios
           .post(
@@ -37,7 +40,9 @@ const SummaryForm = ({ onOrderSet }) => {
               onOrderSet(res.data.orderNumber);
           })
           .catch(err => {
-              console.log('Do something');
+          })
+          .finally(()=>{
+              setIsLoading(false);
           });
     };
     return (
@@ -51,9 +56,11 @@ const SummaryForm = ({ onOrderSet }) => {
                     label={checkboxLabel}
                   />
               </Form.Group>
-              <Button variant="primary" type="submit" disabled={!tcChecked}>
+              {!isLoading && <Button variant="primary" type="submit" disabled={!tcChecked}>
                   Confirm order
               </Button>
+              }
+              {isLoading && <Loader/>}
           </Form>
 
       </>
