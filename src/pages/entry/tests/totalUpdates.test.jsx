@@ -51,7 +51,7 @@ test('Update toppings subtotal, when toppings changes', async () => {
 
 });
 
-describe.only('Grand total', () => {
+describe('Grand total', () => {
     test('starts at 0.00', () => {
         const user = userEvent.setup();
        const {unmount} =  render(<OrderEntry/>);

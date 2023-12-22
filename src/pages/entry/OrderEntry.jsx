@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import Options from './Options';
 import GrandTotal from './GrandTotal';
 import OrderSummary from '../summary/OrderSummary';
+import { useOrderDetails} from '../../context/OrderDetails';
 
 const OrderEntry = () => {
     const [viewOrder, setViewOrder] = useState(false);
+    const {totals} = useOrderDetails();
 
     const viewOrderHandler = () => {
         setViewOrder(true);
@@ -23,7 +25,9 @@ const OrderEntry = () => {
               <Options optionType='toppings'/>
               <GrandTotal/>
 
-              <button onClick={viewOrderHandler}>View Order</button>
+              <button
+                disabled={!totals.scoops}
+                onClick={viewOrderHandler}>View Order</button>
 
           </div>
           }

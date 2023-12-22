@@ -35,7 +35,6 @@ const Options = ({ optionType }) => {
           return ()=> {
            // controller.abort();
 
-              console.log("Unmount")
           }
       },
       [optionType]);

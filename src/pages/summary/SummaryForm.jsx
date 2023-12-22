@@ -5,11 +5,13 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import Loader from '../common/Loader';
+import AlertBanner from '../common/AlertBanner';
 
 const SummaryForm = ({ onOrderSet }) => {
     const [tcChecked, setTcChecked] = useState(false);
     const [orderNumber, setOrderNumber] = useState();
     const [isLoading, setIsLoading] = useState(false);
+    const [isError, setError] = useState(false);
 
     const popover = (
       <Popover id="popover-basic">
@@ -29,6 +31,7 @@ const SummaryForm = ({ onOrderSet }) => {
     const handleOrder = (e) => {
         e.preventDefault();
         setIsLoading(true);
+        setError(false);
 
         axios
           .post(
@@ -40,6 +43,7 @@ const SummaryForm = ({ onOrderSet }) => {
               onOrderSet(res.data.orderNumber);
           })
           .catch(err => {
+              setError(true);
           })
           .finally(()=>{
               setIsLoading(false);
@@ -61,6 +65,7 @@ const SummaryForm = ({ onOrderSet }) => {
               </Button>
               }
               {isLoading && <Loader/>}
+              {isError && <AlertBanner/>}
           </Form>
 
       </>

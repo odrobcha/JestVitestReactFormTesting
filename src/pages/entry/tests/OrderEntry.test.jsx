@@ -6,7 +6,7 @@ import { render, screen, logRoles } from '../../../test-utils/testing-library-ut
 import OrderEntry from '../OrderEntry';
 import { expect } from 'vitest';
 
-test.only('Handles error for scoops and toppings', async () => {
+test('Handles error for scoops and toppings', async () => {
 
     server.resetHandlers(
       http.get('http://localhost:3030/scoops', () => {

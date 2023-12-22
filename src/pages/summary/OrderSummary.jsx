@@ -28,7 +28,7 @@ const OrderSummary = ({ newOrder }) => {
     const onOrderSetHandler = (orderNumber) => {
         setOrderNumber(orderNumber);
     };
-    const newOrderHandler = ()=>{
+    const newOrderHandler = () => {
         newOrder();
     }
 
@@ -36,16 +36,28 @@ const OrderSummary = ({ newOrder }) => {
       <>
           <div>
               <h1>Order Summary</h1>
+
               <h2>Scoops: {formatCurrency(totals['scoops'])}</h2>
               <ul>{scoopList}</ul>
-              <h2>Toppings: {formatCurrency(totals['toppings'])}</h2>
-              <ul> {toppingsList}</ul>
+
+              {toppingsArray.length !== 0 &&
+              <>
+                  <h2>Toppings: {formatCurrency(totals['toppings'])}</h2>
+                  <ul> {toppingsList}</ul>
+              </>
+              }
+
               <SummaryForm onOrderSet={onOrderSetHandler}/>
           </div>
           {orderNumber &&
           <div>
               <p>Order number: {orderNumber}</p>
-              <button onClick={newOrderHandler}>New order</button>
+
+              <button
+
+                onClick={newOrderHandler}>
+                  New order
+              </button>
           </div>
           }
       </>
