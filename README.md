@@ -266,7 +266,7 @@ For example:
 
 - import { fireEvent } from '@testing-library/react';
 
-OR
+ORuserEvent
 - install @testing-library/user-event
 - import userEvent from "@testing-library/user-event";
 
@@ -357,6 +357,7 @@ Documentation
         )
 
 
+### If there is problem with installing msw https://mswjs.io/docs/faq/
 ### Debug
 
 Documentation https://mswjs.io/docs/runbook/
